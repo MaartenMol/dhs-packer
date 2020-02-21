@@ -1,0 +1,5 @@
+{
+    "vcenter_host": "dhsnext-vc-01.dhsnext.nl",
+    "vcenter_user": "administrator@vsphere.local",
+    "vcenter_cluster": "DHSNEXT"
+}

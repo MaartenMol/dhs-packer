@@ -1,0 +1,92 @@
+{
+  "variables": {
+
+    "vm_name": "Windows2019-Template",
+    "vm_folder": "AutomatedTemplates",
+    "vm_switch": "FlightCase Network",
+
+    "iso_path": "[VNX-LUN01-PROD] ISO/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
+
+    "vm_cpu_sockets": "1",
+    "vm_cpu_cores": "2",
+    "vm_disk_size": "51200",
+    "vm_memory": "4096",
+
+    "winrm_username" : "Administrator",
+    "winrm_password" : "P@ssword"
+  
+  },
+  "builders": [
+    {
+      "type": "vsphere-iso",
+
+      "vcenter_server": "{{user  `vcenter_host`  }}",
+      "insecure_connection": "true",
+      "username": "{{user  `vcenter_user`  }}",
+      "password": "{{user  `vcenter_pass`  }}",
+      "cluster": "{{user  `vcenter_cluster`  }}",
+
+      "vm_name":  "{{user  `vm_name`  }}",
+      "convert_to_template": "true",
+      "folder": "{{user  `vm_folder`  }}",
+      "CPUs": "{{user  `vm_cpu_sockets`  }}",
+      "cpu_cores": "{{user  `vm_cpu_cores`  }}",
+      "RAM": "{{user  `vm_memory`  }}",
+      "network": "{{user  `vm_switch`  }}",
+      "network_card": "e1000",
+      "guest_os_type": "windows9Server64Guest",
+      "datastore": "VNX_LUN100_R5 (DHS Only)",
+      "disk_size": "{{user  `vm_disk_size`  }}",
+      "disk_controller_type":  "pvscsi",
+      "disk_thin_provisioned": true,
+      "iso_paths": [ "{{user  `iso_path`  }}", "[VNX-LUN01-PROD] ISO/VMTools/VMware-tools-windows-10.3.10-12406962.iso"],
+
+      "communicator":"winrm",
+      "winrm_username": "{{user `winrm_username`}}",
+      "winrm_password": "{{user `winrm_password`}}",
+      "winrm_use_ssl": true,
+      "winrm_insecure": true,
+      "winrm_timeout": "4h",
+
+      "floppy_files": [
+        "{{template_dir}}/Windows_Server_2019/"
+      ],
+      "floppy_img_path": "[VNX-LUN01-PROD] ISO/VMTools/pvscsi_Windows8.flp",
+
+      "shutdown_command": "C:\\windows\\system32\\sysprep\\sysprep.exe /generalize /oobe /quiet /shutdown",
+      "shutdown_timeout": "30m"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "powershell",
+      "scripts": ["Windows_Server_2019\\setup.ps1"]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "30m"
+    },
+    {
+      "type": "powershell",
+      "scripts": ["Windows_Server_2019\\win-update.ps1"]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "30m"
+    },
+    {
+      "type": "powershell",
+      "scripts": ["Windows_Server_2019\\win-update.ps1"]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "30m"
+    },
+    {
+      "type": "powershell",
+      "scripts": ["Windows_Server_2019\\cleanup.ps1"],
+      "pause_before": "1m"
+    }
+  ]
+}
