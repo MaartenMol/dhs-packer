@@ -1,7 +1,7 @@
 {
   "variables": {
 
-    "vm_name": "Windows2019-Template",
+    "vm_name": "Windows2019Core-Template",
     "vm_folder": "AutomatedTemplates",
     "vm_switch": "FlightCase Network",
     "vm_datastore": "VNX_LUN100_R5 (DHS Only)",
@@ -12,7 +12,7 @@
     "vm_cpu_sockets": "1",
     "vm_cpu_cores": "2",
     "vm_disk_size": "51200",
-    "vm_memory": "4096",
+    "vm_memory": "2048",
 
     "winrm_username" : "Administrator",
     "winrm_password" : "P@ssword"
@@ -50,7 +50,7 @@
       "winrm_insecure": true,
       "winrm_timeout": "4h",
 
-      "floppy_files": ["{{template_dir}}/Windows_Server_2019/"],
+      "floppy_files": ["{{template_dir}}/Windows_Server_2019_Core/"],
 
       "shutdown_command": "shutdown /s /t 5 /f /d p:4:1 /c \"Packer Shutdown\"",
       "shutdown_timeout": "30m"
@@ -60,7 +60,7 @@
   "provisioners": [
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/setup.ps1"]
+      "scripts": ["{{template_dir}}/Windows_Server_2019_Core/setup.ps1"]
     },
     {
       "type": "windows-restart",
@@ -68,7 +68,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/win-update.ps1"]
+      "scripts": ["{{template_dir}}/Windows_Server_2019_Core/win-update.ps1"]
     },
     {
       "type": "windows-restart",
@@ -76,7 +76,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/win-update.ps1"]
+      "scripts": ["{{template_dir}}/Windows_Server_2019_Core/win-update.ps1"]
     },
     {
       "type": "windows-restart",
@@ -84,7 +84,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/cleanup.ps1"],
+      "scripts": ["{{template_dir}}/Windows_Server_2019_Core/cleanup.ps1"],
       "pause_before": "1m"
     }
   ]

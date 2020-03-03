@@ -1,12 +1,12 @@
 {
   "variables": {
 
-    "vm_name": "Windows2019-Template",
+    "vm_name": "Windows10-Template",
     "vm_folder": "AutomatedTemplates",
     "vm_switch": "FlightCase Network",
     "vm_datastore": "VNX_LUN100_R5 (DHS Only)",
 
-    "iso_path": "[VNX-LUN01-PROD] ISO/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
+    "iso_path": "[VNX-LUN01-PROD] ISO/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso",
     "iso_vmtools": "[VNX-LUN01-PROD] ISO/VMTools/VMware-tools-windows-10.3.10-12406962.iso",
 
     "vm_cpu_sockets": "1",
@@ -36,7 +36,7 @@
       "RAM": "{{user  `vm_memory`  }}",
       "network": "{{user  `vm_switch`  }}",
       "network_card": "e1000",
-      "guest_os_type": "windows9Server64Guest",
+      "guest_os_type": "windows9_64Guest",
       "datastore": "{{user  `vm_datastore`  }}",
       "disk_size": "{{user  `vm_disk_size`  }}",
       "disk_controller_type":  "lsilogic-sas",
@@ -50,7 +50,7 @@
       "winrm_insecure": true,
       "winrm_timeout": "4h",
 
-      "floppy_files": ["{{template_dir}}/Windows_Server_2019/"],
+      "floppy_files": ["{{template_dir}}/Windows_10/"],
 
       "shutdown_command": "shutdown /s /t 5 /f /d p:4:1 /c \"Packer Shutdown\"",
       "shutdown_timeout": "30m"
@@ -60,7 +60,7 @@
   "provisioners": [
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/setup.ps1"]
+      "scripts": ["{{template_dir}}/Windows_10/setup.ps1"]
     },
     {
       "type": "windows-restart",
@@ -68,7 +68,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/win-update.ps1"]
+      "scripts": ["{{template_dir}}/Windows_10/win-update.ps1"]
     },
     {
       "type": "windows-restart",
@@ -76,7 +76,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/win-update.ps1"]
+      "scripts": ["{{template_dir}}/Windows_10/win-update.ps1"]
     },
     {
       "type": "windows-restart",
@@ -84,7 +84,7 @@
     },
     {
       "type": "powershell",
-      "scripts": ["{{template_dir}}/Windows_Server_2019/cleanup.ps1"],
+      "scripts": ["{{template_dir}}/Windows_10/cleanup.ps1"],
       "pause_before": "1m"
     }
   ]
