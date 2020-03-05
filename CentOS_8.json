@@ -1,0 +1,66 @@
+{
+  "variables": {
+
+    "vm_name": "CentOS8-Template",
+    "vm_folder": "AutomatedTemplates",
+    "vm_switch": "FlightCase Network",
+    "vm_datastore": "VNX_LUN100_R5 (DHS Only)",
+
+    "iso_path": "[VNX-LUN01-PROD] ISO/CentOS-8.1.1911-x86_64-dvd1.iso",
+
+    "vm_cpu_sockets": "1",
+    "vm_cpu_cores": "2",
+    "vm_disk_size": "51200",
+    "vm_memory": "2048",
+
+    "ssh_username" : "root",
+    "ssh_password" : "P@ssword"
+  
+  },
+  "builders": [
+    {
+      "type": "vsphere-iso",
+
+      "vcenter_server": "{{user  `vcenter_host`  }}",
+      "insecure_connection": "true",
+      "username": "{{user  `vcenter_user`  }}",
+      "password": "{{user  `vcenter_pass`  }}",
+      "cluster": "{{user  `vcenter_cluster`  }}",
+
+      "vm_name":  "{{user  `vm_name`  }}",
+      "convert_to_template": "true",
+      "folder": "{{user  `vm_folder`  }}",
+      "CPUs": "{{user  `vm_cpu_sockets`  }}",
+      "cpu_cores": "{{user  `vm_cpu_cores`  }}",
+      "RAM": "{{user  `vm_memory`  }}",
+      "network": "{{user  `vm_switch`  }}",
+      "network_card": "vmxnet3",
+      "guest_os_type": "centos8_64Guest",
+      "datastore": "{{user  `vm_datastore`  }}",
+      "disk_size": "{{user  `vm_disk_size`  }}",
+      "disk_controller_type":  "lsilogic",
+      "disk_thin_provisioned": true,
+
+      "boot_wait": "10s",
+      "iso_paths": [ "{{user  `iso_path`  }}"],
+
+      "communicator":"ssh",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+
+      "boot_command": [
+        "<up><wait><tab> text ks=https://github.com/MaartenMol/dhs-packer/raw/master/CentOS_8/ks.cfg<enter><wait>"
+      ],
+
+      "shutdown_command": "systemctl poweroff",
+      "shutdown_timeout": "30m"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "{{template_dir}}/CentOS_8/cleanup.sh"
+    }
+  ]
+}
