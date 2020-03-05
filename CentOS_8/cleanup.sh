@@ -1,5 +1,7 @@
 #!/bin/bash -eux
 
+dnf install -y epel-release
+dnf install -y figlet rubygems
 dnf upgrade -y
 
 #Set Python3 as standard Python
