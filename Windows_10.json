@@ -64,7 +64,7 @@
     },
     {
       "type": "windows-restart",
-      "restart_timeout": "60m"
+      "restart_timeout": "120m"
     },
     {
       "type": "powershell",
@@ -72,7 +72,7 @@
     },
     {
       "type": "windows-restart",
-      "restart_timeout": "60m"
+      "restart_timeout": "120m"
     },
     {
       "type": "powershell",
@@ -80,7 +80,7 @@
     },
     {
       "type": "windows-restart",
-      "restart_timeout": "60m"
+      "restart_timeout": "120m"
     },
     {
       "type": "powershell",
